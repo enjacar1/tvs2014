@@ -30,6 +30,7 @@ public class CarritoTest {
         carrito = FactoryCarrito.getCarrito();
         papa = new Producto(25, "papa");
         lechuga = new Producto(10, "lechuga");
+        
     }
 
     @After
