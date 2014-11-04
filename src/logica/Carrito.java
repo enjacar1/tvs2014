@@ -42,12 +42,35 @@ class Carrito implements ICarrito {
 	}
 
 	public void disminuirProducto(Producto p, int cant) {
-		// TODO Auto-generated method stub
+		int cantidadFaltante = cant;
+		LinkedList<Item> itemsRetorno = new LinkedList<Item>();
+                for(Item item : items){
+                    if (!item.getProducto().getNombre().equals(p.getNombre())) {
+                        itemsRetorno.add(item);
+                    } else {
+                        if (item.getCantidad() < cantidadFaltante) {
+                            cantidadFaltante = cantidadFaltante - item.getCantidad();
+                        } else {
+                            int cantidadItem = item.getCantidad();
+                            item.setCantidad(cantidadItem-cantidadFaltante);
+                            itemsRetorno.add(item);
+                            cantidadFaltante = 0;
+                           
+                        }
+                    }
+                }
+                items = itemsRetorno;
 		
 	}
 
 	public void eliminarProductos(Producto p) {
-		// TODO Auto-generated method stub
+		LinkedList<Item> itemsRetorno = new LinkedList<Item>();
+                for(Item item : items){
+                    if (!item.getProducto().getNombre().equals(p.getNombre())) {
+                        itemsRetorno.add(item);
+                    }
+                }
+                items = itemsRetorno;
 		
 	}
 
@@ -61,8 +84,14 @@ class Carrito implements ICarrito {
 	}
 
 	public double obtenerSubtotal(String s) {
-		// TODO Auto-generated method stub
-		return 0;
+            double retorno = 0;
+            for (Item item : items ) {
+                if (item.getProducto().getNombre().equals(s)){
+                    retorno = retorno + item.getProducto().getPrecio() * item.getCantidad();
+                    //break; //se agrega para el caso de que solo hay un item de cada producto
+                }
+            }
+            return retorno;
 	}
 
 	public int obtenerCantidad(String s) {
