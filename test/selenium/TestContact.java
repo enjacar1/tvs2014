@@ -29,25 +29,32 @@ public class TestContact extends AbstractTest {
 
   @Test
   public void testCreateContact() throws Exception {
+      //Menu principal
       driver.findElement(By.cssSelector("img[alt=\"Addressbook\"]")).click();
+      
+      //Boton add (Contact)
       timeOut("exec[nm][add]", driver);
       driver.findElement(By.id("exec[nm][add]")).click();
       
+      //Se obtiene los id de las ventanas (para manejo de popup)
       Set<String> windowId = driver.getWindowHandles();
       Iterator<String> itererator = windowId.iterator();
       String mainID = itererator.next();
       String popupID = itererator.next();
 
+      //Cambio el foco a la ventana emergente de creacion de contacto
       driver.switchTo().window(popupID);
-      System.out.println(driver.getTitle());
            
       //Espero que se habra el popup
       timeOut("exec[n_fn]", driver);
       driver.findElement(By.id("exec[title]")).sendKeys("asdasd");
       driver.findElement(By.id("exec[role]")).sendKeys("1222");
       
-      driver.close();
+      //Vuelvo a la ventana principal de contacto
       driver.switchTo().window(mainID);
+      
+      //Cierro la instancia abierta
+      driver.close();
   }
   
   @After
