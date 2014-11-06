@@ -33,7 +33,6 @@ public class CarritoTest {
     @Before
     public void setUp() {
         carrito = FactoryCarrito.getCarrito();
-        
         //id vacio
         limon = new Producto(40, "");     
         //precio gratis
@@ -53,7 +52,6 @@ public class CarritoTest {
         carrito.vaciar();
     }
 
-   
 
 /** 3 CASOS QUE PRUEBAN LAS 3 OPERS CADA UNO:
  * CASO DE PRODUCTO CON VALORES ESPECIALES, 
@@ -77,8 +75,8 @@ public class CarritoTest {
         assertEquals(20, carrito.obtenerCantidad("tomate"));
         assertEquals(15, carrito.obtenerCantidad("lechuga"));
         
-        int total = 50*40+0-10*15;
-        assertEquals(total, (long)carrito.obtenerPrecioTotal());
+        int total = (int) (carrito.obtenerCantidad("")*limon.getPrecio() + carrito.obtenerCantidad("tomate")*tomate.getPrecio() + carrito.obtenerCantidad("lechuga") * lechuga.getPrecio());
+        assertEquals(total, (int)carrito.obtenerPrecioTotal());
     }
 
      /**
@@ -154,5 +152,102 @@ public class CarritoTest {
         total = (2+3)*25+(8+9)*25+(17+18)*60+(80+81)*65;
         assertEquals(total, (long)carrito.obtenerPrecioTotal());
      
+    }
+    
+    //----------------------- PARTE 2  ------------------------------
+
+    //----------------------- SubTotal  ------------------------------
+    @Test
+    public void testDisminuirListaVacia(){
+        carrito.disminuirProducto(tomate, 20);
+        
+        assertEquals(0, carrito.obtenerCantidad("tomate"));
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testDisminuirMasDeLoQueHay(){
+        carrito.agregarProducto(lechuga, 10);
+        carrito.disminuirProducto(lechuga, 11);
+    }
+    
+    @Test
+    public void testDisminuirProducto(){
+        carrito.agregarProducto(tomate, 20);
+        carrito.disminuirProducto(tomate, 5);
+        
+        assertEquals(15, carrito.obtenerCantidad("tomate"));
+    }
+    
+    @Test
+    public void testDisminuirDosProductosParcial(){
+        carrito.agregarProducto(papa, 10);
+        carrito.agregarProducto(tomate, 20);
+        
+        carrito.disminuirProducto(papa, 4);
+        carrito.disminuirProducto(tomate, 6);
+        
+        assertEquals(6, carrito.obtenerCantidad("papa"));
+        assertEquals(14, carrito.obtenerCantidad("lechuga"));
+    }
+    
+    @Test
+    public void testDisminuirProductoTotal(){
+        carrito.agregarProducto(tomate, 25);
+        carrito.disminuirProducto(tomate, 25);
+        assertEquals(0, carrito.obtenerCantidad("tomate"));
+    }
+
+    //----------------------- SubTotal  ------------------------------
+    
+    @Test
+    public void testSubtotalCarritoVacio(){
+        assertEquals(0, carrito.obtenerSubtotal("naranja"),0);
+        assertEquals(0, carrito.obtenerSubtotal("tomate"),0);
+        assertEquals(0, carrito.obtenerSubtotal("lechuga"),0);
+    }
+
+    
+    @Test
+    public void testSubtotalCarritoConUnItem(){
+        carrito.agregarProducto(naranja, 1);
+        assertEquals(1*naranja.getPrecio(), carrito.obtenerSubtotal("naranja"),0);
+    }
+    
+    @Test
+    public void testSubtotalCarritoConUnItem2(){
+        carrito.agregarProducto(naranja, 10);
+        assertEquals(10*naranja.getPrecio(), carrito.obtenerSubtotal("naranja"),0);
+    }
+    
+    @Test
+    public void testSubtotalCarritoConMasDeUnItem2(){
+        carrito.agregarProducto(naranja, 10);
+        carrito.agregarProducto(manzana, 6);
+        
+        assertEquals(10*naranja.getPrecio(), carrito.obtenerSubtotal("naranja"),0);
+        assertEquals(6*manzana.getPrecio(), carrito.obtenerSubtotal("manzana"),0);
+    }
+    //---------------------- Eliminar Producto --------------------------------
+    
+    @Test
+    public void testEliminarProductoCarritoVacio(){
+        carrito.eliminarProductos(naranja);
+        assertEquals(0,carrito.obtenerCantidad("naranja"));
+    }
+    
+    @Test
+    public void testEliminarProductoCarritoConUnSoloProducto(){
+        carrito.agregarProducto(naranja, 10);
+        carrito.eliminarProductos(naranja);
+        assertEquals(0,carrito.obtenerCantidad("naranja"));
+    }
+    
+    @Test
+    public void testEliminarUnProductoCarritoConMasDeUnProducto(){
+        carrito.agregarProducto(naranja, 10);
+        carrito.agregarProducto(lechuga, 15);
+        carrito.eliminarProductos(naranja);
+        assertEquals(0,carrito.obtenerCantidad("naranja"));
+        assertEquals(15,carrito.obtenerCantidad("lechuga"));
     }
 }

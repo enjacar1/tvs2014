@@ -1,5 +1,6 @@
 package logica;
 
+import javax.naming.CommunicationException;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -19,7 +20,7 @@ public class CarritoMocksTest {
     private Mockery context = new JUnit4Mockery() {{
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
-
+    
     ICarrito carrito;
     ICarrito carrito2;
 
@@ -55,7 +56,32 @@ public class CarritoMocksTest {
 
     @Test
     public void testPagarClienteRegistrado() throws NoExisteClienteException{
-		//TODO    
+
+        final double totalFacturar = 27;
+        final double descuento = 0.10;
+
+        papa = new Producto(20, "papa");
+        lechuga = new Producto(10, "lechuga");
+
+        context.checking(new Expectations() {{
+            try {
+                oneOf(cliMock).getNombre();
+            } catch (CommunicationException ex) {
+            }
+            will(returnValue("ElMockCliente"));
+            oneOf(sistCliMock).descuentoCliente(cliMock); will(returnValue(descuento));
+            oneOf(sistFactMock).facturar(totalFacturar);
+        }});
+
+        carrito = new Carrito(cliMock);
+  
+        carrito.configurarSistemaClientes(sistCliMock);
+        carrito.configurarSistemaFacturacion(sistFactMock);
+
+        carrito.agregarProducto(papa,1);
+        carrito.agregarProducto(lechuga,1);
+        //Ejecuto la prueba
+        carrito.pagar();   
     }
 
 
