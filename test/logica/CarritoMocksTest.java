@@ -57,7 +57,7 @@ public class CarritoMocksTest {
     @Test
     public void testPagarClienteRegistrado() throws NoExisteClienteException{
 
-        final double totalFacturar = 27;
+        final double totalFacturar = 180;
         final double descuento = 0.10;
 
         papa = new Producto(20, "papa");
@@ -78,8 +78,8 @@ public class CarritoMocksTest {
         carrito.configurarSistemaClientes(sistCliMock);
         carrito.configurarSistemaFacturacion(sistFactMock);
 
-        carrito.agregarProducto(papa,1);
-        carrito.agregarProducto(lechuga,1);
+        carrito.agregarProducto(papa,5);
+        carrito.agregarProducto(lechuga,10);
         //Ejecuto la prueba
         carrito.pagar();   
     }
