@@ -1,6 +1,8 @@
 package selenium;
 
+import java.io.FileInputStream;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.apache.xalan.xsltc.runtime.BasisLibrary;
@@ -14,6 +16,7 @@ public class TestContact extends AbstractTest {
   private String baseUrl;
   private boolean acceptNextAlert = true;
   private StringBuffer verificationErrors = new StringBuffer();
+  private static Properties archivo;
 
   @Before
   public void setUp() throws Exception {
@@ -21,9 +24,13 @@ public class TestContact extends AbstractTest {
       driver.manage().window().maximize();
       driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
       driver.get("http://egroupware.cursos.ces.com.uy/login.php");
-      driver.findElement(By.name("login")).sendKeys("tvs2014g05");
-      driver.findElement(By.name("passwd")).sendKeys("tvs2014g05");
+      archivo = new Properties();
+      archivo.load(new FileInputStream("parametros.properties"));
+      
+      driver.findElement(By.name("login")).sendKeys(archivo.getProperty("loginUSR"));
+      driver.findElement(By.name("passwd")).sendKeys(archivo.getProperty("loginPSW"));
       driver.findElement(By.name("submitit")).click();
+      
       timeOut("divMain", driver);
   }
 
