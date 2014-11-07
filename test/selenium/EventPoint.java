@@ -1,20 +1,9 @@
-/**
- * JRobot.java 
- *
- * Created - 31/07/2013
- */
 package selenium;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 
-/**
- * 
- *
- * @author Gustavo Bailon
- *
- */
 public class EventPoint {
 
 	private Robot robot;
