@@ -34,63 +34,59 @@ class Carrito implements ICarrito {
 		//después del testAgregarProductoExistente arreglo de esta forma
 		Item i = this.obtenerItem(p.getNombre());
 		if(i != null){
-			i.setCantidad(i.getCantidad());
+                    i.setCantidad(cant + i.getCantidad());
 		}
 		else {
-			items.add(new Item(p, cant));
+                    items.add(new Item(p, cant));
 		}
 	}
 
 	public void disminuirProducto(Producto p, int cant) {
-		int cantidadFaltante = cant;
-		LinkedList<Item> itemsRetorno = new LinkedList<Item>();
-                for(Item item : items){
-                    if (!item.getProducto().getNombre().equals(p.getNombre())) {
-                        itemsRetorno.add(item);
+            /*LinkedList<Item> itemsRetorno = new LinkedList<Item>();
+            for(Item item : items){
+                if (!item.getProducto().getNombre().equals(p.getNombre())) {
+                    itemsRetorno.add(item);
+                } else {
+                    if (item.getCantidad() < cant) {
+                        item.setCantidad(0);
                     } else {
-                        if (item.getCantidad() < cantidadFaltante) {
-                            cantidadFaltante = cantidadFaltante - item.getCantidad();
-                        } else {
-                            int cantidadItem = item.getCantidad();
-                            item.setCantidad(cantidadItem-cantidadFaltante);
-                            itemsRetorno.add(item);
-                            cantidadFaltante = 0;
-                           
-                        }
+                        int cantidadItem = item.getCantidad();
+                        item.setCantidad(cantidadItem-cant);
+                        itemsRetorno.add(item);
                     }
                 }
-                items = itemsRetorno;
-		
+            }
+            items = itemsRetorno;*/
 	}
 
 	public void eliminarProductos(Producto p) {
-		LinkedList<Item> itemsRetorno = new LinkedList<Item>();
+		/*LinkedList<Item> itemsRetorno = new LinkedList<Item>();
                 for(Item item : items){
                     if (!item.getProducto().getNombre().equals(p.getNombre())) {
                         itemsRetorno.add(item);
                     }
                 }
-                items = itemsRetorno;
+                items = itemsRetorno;*/
 		
 	}
 
 
     public double obtenerPrecioTotal() {
-		int precioTotal = 0;
+	int precioTotal = 0;
         for (Item item : items)
-            precioTotal += item.getProducto().getPrecio();
+            precioTotal += item.getProducto().getPrecio() * item.getCantidad();
 
         return precioTotal;
-	}
+    }
 
 	public double obtenerSubtotal(String s) {
             double retorno = 0;
-            for (Item item : items ) {
+            /*for (Item item : items ) {
                 if (item.getProducto().getNombre().equals(s)){
                     retorno = retorno + item.getProducto().getPrecio() * item.getCantidad();
                     //break; //se agrega para el caso de que solo hay un item de cada producto
                 }
-            }
+            }*/
             return retorno;
 	}
 
@@ -101,7 +97,7 @@ class Carrito implements ICarrito {
 			return i.getCantidad();
 		}
 		else {
-			return -1;
+			return 0;
 		}
 	}
 	

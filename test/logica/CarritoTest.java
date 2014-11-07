@@ -164,10 +164,10 @@ public class CarritoTest {
         assertEquals(0, carrito.obtenerCantidad("tomate"));
     }
     
-    @Test(expected=IllegalArgumentException.class)
     public void testDisminuirMasDeLoQueHay(){
         carrito.agregarProducto(lechuga, 10);
         carrito.disminuirProducto(lechuga, 11);
+        assertEquals(0, carrito.obtenerCantidad("lechuga"));
     }
     
     @Test
@@ -187,7 +187,7 @@ public class CarritoTest {
         carrito.disminuirProducto(tomate, 6);
         
         assertEquals(6, carrito.obtenerCantidad("papa"));
-        assertEquals(14, carrito.obtenerCantidad("lechuga"));
+        assertEquals(14, carrito.obtenerCantidad("tomate"));
     }
     
     @Test
